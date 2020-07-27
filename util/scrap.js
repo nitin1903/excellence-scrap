@@ -1,37 +1,14 @@
-const cheerio = require("cheerio");
+const getHtmlBody = require("./html-body");
+const scrapFor = require("./scrapFor");
 
-let $, Schema;
-
-function scrap(htmlBody, schema) {
-  $ = cheerio.load(htmlBody);
-  Schema = schema;
-  const rootElem = schema.root;
-  const objKeys = Object.keys(schema).slice(1);
-  const mobiles = [];
-  const mobileDivs = $(rootElem);
-  for (let i = 0; i < mobileDivs.length; i++) {
-    let mobile = {};
-    objKeys.forEach((key) => {
-      let elem = $(mobileDivs[i]).find(schema[key].selector);
-      if (schema[key].type == "list") {
-        mobile[key] = [];
-        for (let j = 0; j < elem.length; j++) {
-          mobile[key].push(schemaKeyValue(elem[j], key));
-        }
-      } else {
-        mobile[key] = schemaKeyValue(elem[0], key);
-      }
-    });
-    mobiles.push(mobile);
+async function scrap(url, schema) {
+  try {
+    const response = await getHtmlBody(url);
+    const scrapResult = scrapFor(response, schema);
+    return scrapResult;
+  } catch (err) {
+    throw err;
   }
-  return mobiles;
-}
-
-function schemaKeyValue(elem, key) {
-  if (Schema[key].text) {
-    return $(elem).text();
-  }
-  return elem.attribs[Schema[key].attr];
 }
 
 module.exports = scrap;
