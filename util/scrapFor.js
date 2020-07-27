@@ -6,12 +6,13 @@ function scrapFor(htmlBody, schema) {
   $ = cheerio.load(htmlBody);
   Schema = schema;
   const rootElem = schema.root;
-  const objKeys = Object.keys(schema).slice(1);
+  const source = schema.source;
+  const objKeys = Object.keys(schema).slice(2);
   const mobiles = [];
   const mobileDivs = $(rootElem);
 
   for (let i = 0; i < mobileDivs.length; i++) {
-    let mobile = {};
+    let mobile = { source };
     objKeys.forEach((key) => {
       let elem = $(mobileDivs[i]).find(schema[key].selector);
       if (schema[key].type == "list") {

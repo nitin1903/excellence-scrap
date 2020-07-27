@@ -9,7 +9,7 @@ var usersRouter = require("./routes/users");
 const fetchRouter = require("./routes/fetch");
 
 var app = express();
-
+const dbConnection = require('./db-connection')
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");

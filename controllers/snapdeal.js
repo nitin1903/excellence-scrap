@@ -1,5 +1,6 @@
 const scrap = require("../util/scrap");
 const snapdealSchema = require("../scrap-schema/snapdeal");
+const Mobile = require("../models/mobiles");
 
 async function snapdeal(req, res) {
   try {
@@ -7,7 +8,8 @@ async function snapdeal(req, res) {
       "https://www.snapdeal.com/products/mobiles-mobile-phones/",
       snapdealSchema
     );
-    res.status(200).json(mobiles);
+    await Mobile.addManyMobiles(mobiles);
+    res.status(200).json({ message: "mobiles added to database" });
   } catch (err) {
     res.sendStatus(500);
   }

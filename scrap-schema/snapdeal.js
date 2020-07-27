@@ -1,4 +1,5 @@
 const snapdeal = {
+  source: "snapdeal",
   root: "div.product-tuple-listing",
   name: {
     selector: "p.product-title",
